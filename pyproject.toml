@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "vlmhyperbench"
+version = "0.1.0"
+description = ""
+authors = ["Anton Shiryaev <med.phisiker@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+benchmark-scheduler = {path = "pipeline/wheels/benchmark_scheduler-0.1.0-py3-none-any.whl"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

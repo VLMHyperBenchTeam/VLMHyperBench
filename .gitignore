@@ -1,0 +1,5 @@
+# ignore data folder
+pipeline/data
+
+# ignore python wheels folder
+pipeline/wheels
