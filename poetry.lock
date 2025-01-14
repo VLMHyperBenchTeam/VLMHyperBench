@@ -5,17 +5,18 @@ name = "benchmark-scheduler"
 version = "0.1.0"
 description = ""
 optional = false
-python-versions = ">=3.10,<4.0"
-files = [
-    {file = "benchmark_scheduler-0.1.0-py3-none-any.whl", hash = "sha256:9c31f9a528750085d768e085f66b11d4fe6554728773d09763d0bbb625771fc7"},
-]
+python-versions = "^3.10"
+files = []
+develop = false
 
 [package.dependencies]
-docker = ">=7.1.0,<8.0.0"
+docker = "^7.1.0"
 
 [package.source]
-type = "file"
-url = "pipeline/wheels/benchmark_scheduler-0.1.0-py3-none-any.whl"
+type = "git"
+url = "https://github.com/VLMHyperBenchTeam/benchmark_scheduler"
+reference = "HEAD"
+resolved_reference = "114883433dcd933a6c276bd7550b422a375d3cc9"
 
 [[package]]
 name = "certifi"
@@ -233,4 +234,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4c842cc00314d95e62decec12b8bae4dedb84ca6b31e145f108f217a5cd305cf"
+content-hash = "b7c50614ea852ad5fb02c5924174c406c36ad7b559d1e78e90593dcdf43fc39a"
