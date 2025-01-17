@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 benchmark-scheduler = {git = "https://github.com/VLMHyperBenchTeam/benchmark_scheduler.git", rev = "0.1.0"}
+pandas = "^2.2.3"
+ipykernel = "^6.29.5"
 
 
 [build-system]
