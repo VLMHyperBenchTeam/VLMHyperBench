@@ -14,8 +14,8 @@ docker = "^7.1.0"
 
 [package.source]
 type = "git"
-url = "https://github.com/VLMHyperBenchTeam/benchmark_scheduler"
-reference = "HEAD"
+url = "https://github.com/VLMHyperBenchTeam/benchmark_scheduler.git"
+reference = "0.1.0"
 resolved_reference = "114883433dcd933a6c276bd7550b422a375d3cc9"
 
 [[package]]
@@ -234,4 +234,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "b7c50614ea852ad5fb02c5924174c406c36ad7b559d1e78e90593dcdf43fc39a"
+content-hash = "463c3899f60513d6e6c40f634c8af2da29c2327759434c568efa3e84e6e480e7"

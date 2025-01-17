@@ -16,7 +16,7 @@ if __name__ == "__main__":
         container_dir=container_directory,
         script_path="/workspace/scripts/writer.py",
         packages_to_install=["wheels/some_package-0.1.0-py3-none-any.whl"],
-        keep_container=True,
+        keep_container=False,
     )
 
     run_container(
@@ -26,4 +26,5 @@ if __name__ == "__main__":
         script_path="/workspace/scripts/reader.py",
         use_gpu=True,
         packages_to_install=["wheels/some_package-0.1.0-py3-none-any.whl"],
+        keep_container=False,
     )
