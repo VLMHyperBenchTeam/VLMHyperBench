@@ -8,8 +8,12 @@ if __name__ == "__main__":
     host_directory = os.path.join(os.getcwd(), "pipeline")
     container_directory = "/workspace"
 
-    vlm_docker_img = "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
-    eval_docker_img = "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
+    vlm_docker_img = (
+        "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
+    )
+    eval_docker_img = (
+        "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
+    )
 
     run_container(
         vlm_docker_img,
