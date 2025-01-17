@@ -15,6 +15,12 @@ class BenchmarkRunConfig:
             Defaults to None.
             Если None, то будет использован Docker image из `vlmhyperbench/vlm_base.csv`,
             для запуска указанной модели в указанном фреймворке инференса.
+        python_package (str | None): Название python-пакета с классом нужной VLM-модели. Optional.
+            Defaults to None.
+        module (str | None): Название модуля в python-пакете с классом нужной VLM-модели. Optional.
+            Defaults to None.
+        class_name (str | None): Название класса нужной VLM-модели в указанном python-пакете.
+            Optional. Defaults to None.А
         system_prompt (str | None): Название текстового файла, содержащего system prompt,
             который будет передан VLM-модели при ее инициализации. Optional.
             Defaults to None.
