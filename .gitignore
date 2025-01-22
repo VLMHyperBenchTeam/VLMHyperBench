@@ -1,5 +1,34 @@
-# ignore data folder
-pipeline/data
+# Игнорируем файлы, созданные Python
+__pycache__/
 
-# ignore python wheels folder
-pipeline/wheels
+# Игнорируем файлы, созданные редакторами и IDE
+.vscode/
+.idea/
+
+# Игнорируем файлы, связанные с установкой и зависимостями
+dist/
+
+# Игнорируем файлы, связанные с тестами и покрытием кода
+.coverage
+htmlcov/
+.pytest_cache/
+.coverage.*
+*.cover
+*.xml
+*.html
+
+# Игнорируем файлы, связанные с Jupyter Notebook
+.ipynb_checkpoints/
+
+# Игнорируем файлы, связанные с конфигурацией и секретами
+*.env
+
+# Игнорируем файлы, связанные с логами
+*.log
+logs/
+
+# Игнорируем python wheels
+*.whl
+
+# ignore data Hugging Face model_cache
+vlmhyperbench/model_cache

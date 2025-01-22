@@ -1,10 +1,7 @@
-import os
 import time
 
-import torch
-from tqdm import tqdm
-
 from some_package.my_module import Calculator, greet
+from tqdm import tqdm
 
 
 if __name__ == "__main__":
@@ -14,18 +11,11 @@ if __name__ == "__main__":
 
     # Тест модуля добавленного в докер-контейнер
     print("Тестируем some_package")
-    print("-"*30)
+    print("-" * 30)
     print(greet(name="Ivan"))
     calc = Calculator()
     print(calc.add(1, 3))
-    print("-"*30)
-
-    os.system("nvidia-smi")
-    print("torch.__version__", torch.__version__)
-    print("torch.cuda.is_available()", torch.cuda.is_available())
-    print("torch.cuda.current_device()", torch.cuda.current_device())
-    print("torch.cuda.device_count()", torch.cuda.current_device())
-    print("torch.cuda.get_device_name(0)", torch.cuda.get_device_name(0))
+    print("-" * 30)
 
     with open(input_txt, "r") as input_file, open(output_txt, "w") as output_file:
         # Читаем файл построчно

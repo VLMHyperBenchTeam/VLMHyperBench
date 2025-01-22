@@ -1,0 +1,3 @@
+﻿dataset;framework;model_name;docker_image;system_prompt;prompt_collection;metrics;only_evaluate_metrics;metrics_aggregators;filter_doc_class;filter_question_type
+Passport_MINI;Hugging Face;Qwen2-VL-2B;ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0;1.txt;AntonShiryaev.csv;['WER', 'CER', 'BLEU'];False;['by_id', 'by_doc_type', 'overall'];;
+Passport_MINI;Hugging Face;Qwen2-VL-7B;ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.1;;AntonShiryaev.csv;['WER', 'CER', 'BLEU'];False;['by_id', 'by_doc_type', 'overall'];;
