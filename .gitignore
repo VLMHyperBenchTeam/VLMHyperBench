@@ -30,5 +30,5 @@ logs/
 # Игнорируем python wheels
 *.whl
 
-# ignore data folder
-pipeline/data
+# ignore data Hugging Face model_cache
+vlmhyperbench/model_cache
