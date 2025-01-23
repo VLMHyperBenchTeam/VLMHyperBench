@@ -1,6 +1,6 @@
 import os
 
-from benchmark_scheduler.docker_run import run_container
+from benchmark_scheduler.benchmark_orchestrator import run_container
 
 
 if __name__ == "__main__":
@@ -36,6 +36,6 @@ if __name__ == "__main__":
         host_dir=host_directory,
         container_dir=container_directory,
         script_path="bench_stages/run_eval.py",
-        packages_to_install=["wheels/some_package-0.1.0-py3-none-any.whl"],
+        # packages_to_install=["wheels/some_package-0.1.0-py3-none-any.whl"],
         keep_container=False,
     )
