@@ -32,3 +32,12 @@ logs/
 
 # ignore data Hugging Face model_cache
 vlmhyperbench/model_cache
+
+# Игнорируем все датасеты
+vlmhyperbench/Datasets/*
+
+# Игнорируем все коллекции промптов
+vlmhyperbench/PromptCollection/*
+
+# Игнорируем ответы моделей
+vlmhyperbench/ModelsAnswers/*

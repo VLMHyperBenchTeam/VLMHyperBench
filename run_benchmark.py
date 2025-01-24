@@ -1,41 +1,56 @@
 import os
 
-from benchmark_scheduler.benchmark_orchestrator import run_container
+from benchmark_scheduler.benchmark_orchestrator import (
+    host_paths_to_abs,
+    load_env_vars,
+    run_container,
+)
 
 
 if __name__ == "__main__":
-    # Путь к папке на хосте и путь внутри контейнера
-    host_directory = os.path.join(os.getcwd(), "vlmhyperbench")
-    container_directory = "/workspace"
-
     vlm_docker_img = (
         "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
     )
     eval_docker_img = (
-        "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
+        "python:3.10.16"
     )
+
+    volumes = {
+        # папки для обмена файлами
+        "vlmhyperbench/cfg": "/workspace/cfg",
+        "vlmhyperbench/SystemPrompts": "/workspace/SystemPrompts",
+        "vlmhyperbench/PromptCollection": "/workspace/PromptCollection",
+        "vlmhyperbench/Datasets": "/workspace/Datasets",
+        "vlmhyperbench/ModelsAnswers": "/workspace/ModelsAnswers",
+        
+        # служебные папки EvalKit
+        "vlmhyperbench/bench_stages": "/workspace/bench_stages",
+        "vlmhyperbench/wheels": "/workspace/wheels",
+        "vlmhyperbench/model_cache": "/workspace/model_cache",
+    }
+
+    environment = load_env_vars()
+    volumes = host_paths_to_abs(volumes, current_dir=None)
 
     run_container(
         vlm_docker_img,
-        host_dir=host_directory,
-        container_dir=container_directory,
+        volumes,
         script_path="bench_stages/run_vlm.py",
         packages_to_install=[
+            "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.2",
             "git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0",
-            "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.0",
             "git+https://github.com/VLMHyperBenchTeam/model_qwen2-vl.git@0.1.0",
             "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.1.0",
             # "git+https://github.com/VLMHyperBenchTeam/system_prompt_adapter.git@0.1.0",
         ],
-        keep_container=False,
         use_gpu=True,
     )
 
     run_container(
-        vlm_docker_img,
-        host_dir=host_directory,
-        container_dir=container_directory,
+        eval_docker_img,
+        volumes,
         script_path="bench_stages/run_eval.py",
-        # packages_to_install=["wheels/some_package-0.1.0-py3-none-any.whl"],
-        keep_container=False,
+        packages_to_install=[
+            "git+https://github.com/VLMHyperBenchTeam/some_package.git@0.1.0"
+        ],
     )
