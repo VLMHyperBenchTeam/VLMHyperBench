@@ -1,31 +1,29 @@
-import time
-
-from some_package.my_module import Calculator, greet
-from tqdm import tqdm
-
+from metric_evaluator.metric_evaluator import MetricEvaluator
 
 if __name__ == "__main__":
-    # Имя файла, из которого будем читать данные
-    input_txt = "data/task1_output.txt"
-    output_txt = "data/task2_output.txt"
+    dataset_annot = "/workspace/Datasets/snils/annotations.csv"
+    model_answers = "/workspace/ModelsAnswers/snils_MODELFRAMEWORK_Qwen2-VL-2B-Instruct_VQA_answers_20250202_214414.csv"
 
-    # Тест модуля добавленного в докер-контейнер
-    print("Тестируем some_package")
-    print("-" * 30)
-    print(greet(name="Ivan"))
-    calc = Calculator()
-    print(calc.add(1, 3))
-    print("-" * 30)
+    metric_eval = MetricEvaluator(dataset_annot, model_answers)
 
-    with open(input_txt, "r") as input_file, open(output_txt, "w") as output_file:
-        # Читаем файл построчно
-        for line in tqdm(input_file, desc="Processing lines", unit="line"):
-            number = int(line.strip())
-            doubled_number = number * 2
+    df_by_id_path_csv = "/workspace/ModelsMetrics/by_id.csv"
+    df_by_id = metric_eval.save_function_results(
+        csv_path=df_by_id_path_csv, func_name="by_id"
+    )
 
-            print(f"\nResult: {doubled_number}")
-            output_file.write(f"{doubled_number}\n")
-            output_file.flush()
+    df_by_doc_type_path_csv = "/workspace/ModelsMetrics/df_by_doc_type.csv"
+    metric_eval.save_function_results(
+        csv_path=df_by_doc_type_path_csv, func_name="by_doc_type", func_arg=df_by_id
+    )
 
-            # Ждем одну секунду
-            time.sleep(1)
+    df_by_doc_question_path_csv = "/workspace/ModelsMetrics/df_by_doc_question.csv"
+    metric_eval.save_function_results(
+        csv_path=df_by_doc_question_path_csv,
+        func_name="by_doc_question",
+        func_arg=df_by_id,
+    )
+
+    df_general_csv_path = "/workspace/ModelsMetrics/df_general.csv"
+    df_general = metric_eval.save_function_results(
+        csv_path=df_general_csv_path, func_name="general"
+    )
