@@ -41,3 +41,6 @@ vlmhyperbench/PromptCollection/*
 
 # Игнорируем ответы моделей
 vlmhyperbench/ModelsAnswers/*
+
+# Игнорируем метрики моделей
+vlmhyperbench/ModelsMetrics/*
