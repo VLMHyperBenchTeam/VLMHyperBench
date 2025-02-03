@@ -21,7 +21,7 @@ if __name__ == "__main__":
         # папки для обмена файлами
         "vlmhyperbench/cfg": "/workspace/cfg",
         "vlmhyperbench/SystemPrompts": "/workspace/SystemPrompts",
-        "vlmhyperbench/PromptCollection": "/workspace/PromptCollection",
+        "vlmhyperbench/PromptCollection": "/workspace/prompts",
         "vlmhyperbench/Datasets": "/workspace/Datasets",
         "vlmhyperbench/ModelsAnswers": "/workspace/ModelsAnswers",
         "vlmhyperbench/ModelsMetrics": "/workspace/ModelsMetrics",
@@ -38,22 +38,36 @@ if __name__ == "__main__":
     run_container(
         vlm_docker_img,
         volumes,
-        script_path="bench_stages/run_vlm.py",
+        script_path="bench_stages/run_rpo.py",
         packages_to_install=[
             "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.2",
             "git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0",
             "git+https://github.com/VLMHyperBenchTeam/model_qwen2-vl.git@0.1.0",
-            "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.1.5",
+            "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.0",
             # "git+https://github.com/VLMHyperBenchTeam/system_prompt_adapter.git@0.1.0",
         ],
         use_gpu=True,
     )
 
-    run_container(
-        eval_docker_img,
-        volumes,
-        script_path="bench_stages/run_eval.py",
-        packages_to_install=[
-            "git+https://github.com/VLMHyperBenchTeam/metric_evaluator.git@0.1.0",
-        ],
-    )
+#    run_container(
+#        vlm_docker_img,
+#        volumes,
+#        script_path="bench_stages/run_vlm.py",
+#        packages_to_install=[
+#            "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.2",
+#            "git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0",
+#            "git+https://github.com/VLMHyperBenchTeam/model_qwen2-vl.git@0.1.0",
+#            "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.0",
+#            # "git+https://github.com/VLMHyperBenchTeam/system_prompt_adapter.git@0.1.0",
+#        ],
+#        use_gpu=True,
+#    )
+#
+#    run_container(
+#        eval_docker_img,
+#        volumes,
+#        script_path="bench_stages/run_eval.py",
+#        packages_to_install=[
+#            "git+https://github.com/VLMHyperBenchTeam/metric_evaluator.git@0.1.0",
+#        ],
+#    )
