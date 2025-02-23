@@ -51,15 +51,22 @@ if __name__ == "__main__":
     model = ModelFactory.get_model(config.model_family, model_init_params)
 
     # Совершаем прогон модели по датасету
+    dataset_dir_path = os.path.join("Datasets", config.task_name, config.dataset)
     iterator = IteratorFabric.get_dataset_iterator(
         task_name=config.task_name,
         dataset_name=config.dataset,
         filter_doc_class=config.filter_doc_class,
         filter_question_type=config.filter_question_type,
-        dataset_dir_path="Datasets/snils",
+        dataset_dir_path=dataset_dir_path,
+        prompt_collection_filename=config.prompt_collection,
+        prompt_dir="PromptCollection",
     )
     runner = IteratorFabric.get_runner(
         iterator, model, answers_dir_path="ModelsAnswers"
     )
     runner.run()
-    runner.save_answers()
+    metric_file_path = runner.save_answers()
+    
+    config.metric_file = metric_file_path
+    
+    config.to_json(config_dir)
