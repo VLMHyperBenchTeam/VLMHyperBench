@@ -22,7 +22,7 @@
         "by_doc_type",
         "overal"
     ],
-    "filter_doc_class": "",
-    "filter_question_type": "",
-    "metric_file": "ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250223_220741.csv"
+    "filter_doc_class": "snils",
+    "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u043d\u0438\u043b\u0441\u0430",
+    "metric_file": "ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250223_225621.csv"
 }

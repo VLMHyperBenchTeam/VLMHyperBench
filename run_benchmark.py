@@ -54,6 +54,6 @@ if __name__ == "__main__":
         script_path="bench_stages/run_eval.py",
         packages_to_install=[
             "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.3",
-            "git+https://github.com/VLMHyperBenchTeam/metric_evaluator.git@0.1.0",
+            "git+https://github.com/VLMHyperBenchTeam/metric_evaluator.git@0.1.1",
         ],
     )
