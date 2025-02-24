@@ -13,7 +13,9 @@ if __name__ == "__main__":
     config_dir = os.path.join(run_cfg_dir, run_cfg_filename)
     config = BenchmarkRunConfig.from_json(config_dir)
 
-    dataset_annot = os.path.join("Datasets", config.task_name, config.dataset, "annotation.csv")
+    dataset_annot = os.path.join(
+        "Datasets", config.task_name, config.dataset, "annotation.csv"
+    )
     model_answers = config.metric_file
     date_from_metric = os.path.split(model_answers)[-1]
     date_from_metric = os.path.splitext(date_from_metric)[0]
@@ -24,22 +26,28 @@ if __name__ == "__main__":
 
     df_by_id_path_csv = f"ModelsMetrics/by_id_{date_from_metric}.csv"
     df_by_id = metric_eval.save_function_results(
-        csv_path=df_by_id_path_csv, func_name="by_id"
+        csv_path=df_by_id_path_csv, func_name="by_id", metrics=config.metrics
     )
 
     df_by_doc_type_path_csv = f"ModelsMetrics/df_by_doc_type_{date_from_metric}.csv"
     metric_eval.save_function_results(
-        csv_path=df_by_doc_type_path_csv, func_name="by_doc_type", func_arg=df_by_id
+        csv_path=df_by_doc_type_path_csv,
+        func_name="by_doc_type",
+        func_arg=df_by_id,
+        metrics=config.metrics,
     )
 
-    df_by_doc_question_path_csv = f"ModelsMetrics/df_by_doc_question_{date_from_metric}.csv"
+    df_by_doc_question_path_csv = (
+        f"ModelsMetrics/df_by_doc_question_{date_from_metric}.csv"
+    )
     metric_eval.save_function_results(
         csv_path=df_by_doc_question_path_csv,
         func_name="by_doc_question",
         func_arg=df_by_id,
+        metrics=config.metrics,
     )
 
     df_general_csv_path = f"ModelsMetrics/df_general_{date_from_metric}.csv"
     df_general = metric_eval.save_function_results(
-        csv_path=df_general_csv_path, func_name="general"
+        csv_path=df_general_csv_path, func_name="general", metrics=config.metrics
     )

@@ -1,19 +1,17 @@
 {
-    "dataset": "snils",
+    "dataset": "idt_pdf_full",
     "framework": "Hugging Face",
     "model_name": "Qwen2.5-VL-3B-Instruct",
     "model_family": "Qwen2.5-VL",
     "task_name": "VQA",
-    "prompt_collection": "VQA/snils/qwen2_vl_2b/deepseek_chat.csv",
+    "prompt_collection": "VQA/idt_pdf_full/qwen2.5_vl_3b/AntonShiryaev.csv",
     "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2.5-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
     "python_package": "model_qwen2_5_vl",
     "module": "models",
     "class_name": "Qwen2_5_VLModel",
     "system_prompt": null,
     "metrics": [
-        "WER",
-        "CER",
-        "BLEU"
+        "CER"
     ],
     "only_evaluate_metrics": false,
     "metrics_aggregators": [
@@ -22,7 +20,7 @@
         "by_doc_type",
         "overal"
     ],
-    "filter_doc_class": "snils",
-    "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u043d\u0438\u043b\u0441\u0430",
-    "metric_file": "ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250223_225621.csv"
+    "filter_doc_class": "doc",
+    "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b",
+    "metric_file": "ModelsAnswers/idt_pdf_full_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250223_233419.csv"
 }
