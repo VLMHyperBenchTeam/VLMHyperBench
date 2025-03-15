@@ -1,10 +1,10 @@
 {
-    "dataset": "idt_pdf_full_mini",
+    "dataset": "idt_pdf_full",
     "framework": "Hugging Face",
-    "model_name": "Qwen2.5-VL-3B-Instruct",
+    "model_name": "Qwen2.5-VL-7B-Instruct",
     "model_family": "Qwen2.5-VL",
     "task_name": "VQA",
-    "prompt_collection": "VQA/idt_pdf_full/qwen2.5_vl_3b/AntonShiryaev_page_topic.csv",
+    "prompt_collection": "VQA/idt_pdf_full/qwen2.5_vl_7b/JuliaJu_en_Qwen2_5-VL-7B_page_number_full_ver0_cer_00.csv",
     "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2.5-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
     "python_package": "model_qwen2_5_vl",
     "module": "models",
@@ -21,6 +21,6 @@
         "overal"
     ],
     "filter_doc_class": "doc",
-    "filter_question_type": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0431\u043b\u043e\u043a\u0430",
-    "metric_file": "ModelsAnswers/idt_pdf_full_mini_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250224_070852.csv"
+    "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b",
+    "metric_file": "ModelsAnswers/idt_pdf_full_MODELFRAMEWORK_Qwen2.5-VL-7B-Instruct_VQA_answers_20250224_163814.csv"
 }
