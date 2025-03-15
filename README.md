@@ -1,5 +1,7 @@
 # Проект VLMHyperBench
 
+![VLMHyperBench_logo](repo_pics/VLMHyperBench_logo.png)
+
 `VLMHyperBench` – open source фреймворк для оценки возможностей `Vision language models(VLM)` распознавать документы на русском языке с целью оценки их потенциала для автоматизации документооборота.
 
 ## Цели проекта:
