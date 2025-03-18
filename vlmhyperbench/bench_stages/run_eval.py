@@ -2,6 +2,7 @@ import os
 
 from benchmark_run_config.benchmark_run_config import BenchmarkRunConfig
 from metric_evaluator.metric_evaluator import MetricEvaluator
+from config_manager.config_manager import ConfigManager
 
 
 def run_vlm_eval_greet(config, model_class_path):
@@ -26,15 +27,17 @@ def run_vlm_eval_greet(config, model_class_path):
 
 
 if __name__ == "__main__":
-    run_cfg_dir = "cfg"  # папка с BenchmarkRunConfig.json
+    # TODO: получился жестко захардкоженный параметр!
+    cfg_path = "/workspace/cfg/VLMHyperBench_config.json"
     run_cfg_filename = "BenchmarkRunConfig.json"
-
-    # Папки для VLMHyperBench_config.json
-    datasets_dir = "Datasets"
-    model_metrics_dir = "ModelsMetrics"
-
+    
+    # Получаем конфиг с всеми путями в Docker-контейнере
+    software_cfg = ConfigManager(cfg_path)
+    container_cfg = software_cfg.cfg_container
+    
     # Получаем конфиг со всеми параметрами прогона
-    config_dir = os.path.join(run_cfg_dir, run_cfg_filename)
+    config_dir = os.path.join(container_cfg["system_dirs"]["cfg"], run_cfg_filename)
+    print(config_dir)
     config = BenchmarkRunConfig.from_json(config_dir)
 
     # Инфо о том где взять класс для семейства моделей
@@ -43,7 +46,7 @@ if __name__ == "__main__":
     run_vlm_eval_greet(config, model_class_path)
 
     dataset_annot = os.path.join(
-        datasets_dir, config.task_name, config.dataset, "annotation.csv"
+        container_cfg["data_dirs"]["datasets"], config.task_name, config.dataset, "annotation.csv"
     )
 
     # Получаем название файла метрик
@@ -56,7 +59,7 @@ if __name__ == "__main__":
     # Производим расчет метрик по всем агрегаторам
     for metrics_aggregator in config.metrics_aggregators:
         metric_csv_path = os.path.join(
-            model_metrics_dir, f"{filename_from_metric}_{metrics_aggregator}.csv"
+            container_cfg["data_dirs"]["model_metrics"], f"{filename_from_metric}_{metrics_aggregator}.csv"
         )
         metric_eval.save_function_results(
             csv_path=metric_csv_path,

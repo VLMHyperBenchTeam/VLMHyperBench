@@ -27,21 +27,21 @@ if __name__ == "__main__":
     environment = load_env_vars()
 
     # 2. Этап "Запуск VLM" на Docker-контейнере
-    # run_container(
-    #     vlm_docker_img,
-    #     volumes,
-    #     script_path="bench_stages/run_vlm.py",
-    #     packages_to_install=[
-    #         "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.3",
-    #         # "/workspace/wheels/benchmark_run_config-0.1.0-py3-none-any.whl",
-    #         "git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0",
-    #         "git+https://github.com/VLMHyperBenchTeam/model_qwen2.5-vl.git@0.1.0",
-    #         "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.1",
-    #         # "git+https://github.com/VLMHyperBenchTeam/system_prompt_adapter.git@0.1.0",
-    #         "git+https://github.com/VLMHyperBenchTeam/config_manager.git@0.1.0",
-    #     ],
-    #     use_gpu=True,
-    # )
+    run_container(
+        vlm_docker_img,
+        volumes,
+        script_path="/workspace/bench_stages/run_vlm.py",
+        packages_to_install=[
+            "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.3",
+            # "/workspace/wheels/benchmark_run_config-0.1.0-py3-none-any.whl",
+            "git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0",
+            "git+https://github.com/VLMHyperBenchTeam/model_qwen2.5-vl.git@0.1.0",
+            "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.1",
+            # "git+https://github.com/VLMHyperBenchTeam/system_prompt_adapter.git@0.1.0",
+            "git+https://github.com/VLMHyperBenchTeam/config_manager.git@0.1.0",
+        ],
+        use_gpu=True,
+    )
 
     # 3. Этап "Оценка метрик" на Docker-контейнере
     run_container(
@@ -51,5 +51,6 @@ if __name__ == "__main__":
         packages_to_install=[
             "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.3",
             "git+https://github.com/VLMHyperBenchTeam/metric_evaluator.git@0.1.1",
+            "git+https://github.com/VLMHyperBenchTeam/config_manager.git@0.1.0"
         ],
     )

@@ -18,10 +18,9 @@
         "by_id",
         "by_doc_question",
         "by_doc_type",
-        "general",
-        "overal"
+        "general"
     ],
     "filter_doc_class": "snils",
     "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u043d\u0438\u043b\u0441\u0430",
-    "metric_file": "/workspace/ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250318_064526.csv"
+    "metric_file": "/workspace/ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250318_114746.csv"
 }
