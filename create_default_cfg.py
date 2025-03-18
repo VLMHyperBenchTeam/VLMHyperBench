@@ -12,7 +12,8 @@ if __name__ == "__main__":
     config.write_config()
 
     # Получим маппинг директорий для Docker-контейнера
-    volumes = config.get_volumes()
-
-    for host_path, container_path in volumes.items():
+    for host_path, container_path in config.volumes.items():
         print(host_path, container_path)
+        
+    # Получим конфиг директорий для Docker-контейнера
+    print(config.cfg_container)

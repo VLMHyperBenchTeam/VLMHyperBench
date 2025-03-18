@@ -1,6 +1,5 @@
 {
     "data_dirs": {
-        "vlm_base": "vlmhyperbench/vlm_base.csv",
         "datasets": "vlmhyperbench/Datasets",
         "model_answers": "vlmhyperbench/ModelsAnswers",
         "model_metrics": "vlmhyperbench/ModelsMetrics",

@@ -1,6 +1,7 @@
 import os
 
 from benchmark_run_config.benchmark_run_config import BenchmarkRunConfig
+from config_manager.config_manager import ConfigManager
 from dataset_iterator.fabrics import IteratorFabric
 from model_interface.model_factory import ModelFactory
 
@@ -23,12 +24,16 @@ def run_vlm_stage_greet(config, model_class_path):
 
 
 if __name__ == "__main__":
-    run_cfg_dir = "cfg"  # папка с BenchmarkRunConfig.json
-    cache_directory = "model_cache"  # сохраняем VLM в эту папку
+    # TODO: получился жестко захардкоженный параметр!
+    cfg_path = "/workspace/cfg/VLMHyperBench_config.json"
     run_cfg_filename = "BenchmarkRunConfig.json"
 
+    # Получаем конфиг с всеми путями в Docker-контейнере
+    software_cfg = ConfigManager(cfg_path)
+    container_cfg = software_cfg.cfg_container
+
     # Получаем конфиг со всеми параметрами прогона
-    config_dir = os.path.join(run_cfg_dir, run_cfg_filename)
+    config_dir = os.path.join(container_cfg["system_dirs"]["cfg"], run_cfg_filename)
     config = BenchmarkRunConfig.from_json(config_dir)
 
     # Инфо о том где взять класс для семейства моделей
@@ -44,7 +49,7 @@ if __name__ == "__main__":
     model_init_params = {
         "model_name": config.model_name,
         "system_prompt": "",
-        "cache_dir": cache_directory,
+        "cache_dir": container_cfg["system_dirs"]["model_cache"],
     }
 
     run_vlm_stage_greet(config, model_class_path)
@@ -52,7 +57,10 @@ if __name__ == "__main__":
     model = ModelFactory.get_model(config.model_family, model_init_params)
 
     # Совершаем прогон модели по датасету
-    dataset_dir_path = os.path.join("Datasets", config.task_name, config.dataset)
+    dataset_dir_path = os.path.join(
+        container_cfg["data_dirs"]["datasets"], config.task_name, config.dataset
+    )
+
     iterator = IteratorFabric.get_dataset_iterator(
         task_name=config.task_name,
         dataset_name=config.dataset,
@@ -60,15 +68,16 @@ if __name__ == "__main__":
         filter_question_type=config.filter_question_type,
         dataset_dir_path=dataset_dir_path,
         prompt_collection_filename=config.prompt_collection,
-        prompt_dir="PromptCollection",
+        prompt_dir=container_cfg["data_dirs"]["prompt_collections"],
     )
+
     runner = IteratorFabric.get_runner(
-        iterator, model, answers_dir_path="ModelsAnswers"
+        iterator, model, answers_dir_path=container_cfg["data_dirs"]["model_answers"]
     )
     runner.run()
-    
+
     metric_file_path = runner.save_answers()
-    
+
     config.metric_file = metric_file_path
-    
+
     config.to_json(config_dir)

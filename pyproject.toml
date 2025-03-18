@@ -10,6 +10,7 @@ python = "^3.10"
 pandas = "^2.2.3"
 ipykernel = "^6.29.5"
 benchmark-scheduler = {git = "https://github.com/VLMHyperBenchTeam/benchmark_scheduler.git", rev = "0.1.3"}
+config-manager = {git = "https://github.com/VLMHyperBenchTeam/config_manager.git", rev = "0.1.0"}
 
 [build-system]
 requires = ["poetry-core"]
