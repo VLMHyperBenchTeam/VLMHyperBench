@@ -16,6 +16,7 @@ def run_vlm_stage_greet(config, model_class_path):
     print(f"docker_image: {config.docker_image}")
     print(f"model_class_path: {model_class_path}\n")
     print(f"task_name: {config.task_name}")
+    print(f"system_prompt: {config.system_prompt}")
     print(f"prompt_collection: {config.prompt_collection}")
     print("#" * 80)
     print("\n" * 2)
@@ -65,6 +66,7 @@ if __name__ == "__main__":
         iterator, model, answers_dir_path="ModelsAnswers"
     )
     runner.run()
+    
     metric_file_path = runner.save_answers()
     
     config.metric_file = metric_file_path
