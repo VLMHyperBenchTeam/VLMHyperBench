@@ -6,6 +6,7 @@
     "task_name": "VQA",
     "prompt_collection": "VQA/snils/qwen2_vl_2b/yulia_ov.csv",
     "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2.5-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
+    "git_python_package":"git+https://github.com/VLMHyperBenchTeam/model_qwen2.5-vl.git@0.1.0",
     "python_package": "model_qwen2_5_vl",
     "module": "models",
     "class_name": "Qwen2_5_VLModel",
@@ -22,5 +23,5 @@
     ],
     "filter_doc_class": "snils",
     "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u043d\u0438\u043b\u0441\u0430",
-    "metric_file": "/workspace/ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250318_114746.csv"
+    "metric_file": "/workspace/ModelsAnswers/snils_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250318_115911.csv"
 }

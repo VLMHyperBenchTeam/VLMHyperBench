@@ -294,7 +294,7 @@ develop = false
 type = "git"
 url = "https://github.com/VLMHyperBenchTeam/config_manager.git"
 reference = "0.1.0"
-resolved_reference = "44b41fc450bc4c555235889f33e8ec96827e4015"
+resolved_reference = "3e60f98fdbf1eac0aa02df3e07389cd1724a9bab"
 
 [[package]]
 name = "debugpy"

@@ -16,41 +16,27 @@ if __name__ == "__main__":
     # Получим маппинг директорий для Docker-контейнера
     volumes = config.get_volumes()
     volumes = host_paths_to_abs(volumes)
-
-    vlm_docker_img = (
-        "ghcr.io/vlmhyperbenchteam/qwen2.5-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0"
-    )
-    eval_docker_img = (
-        "ghcr.io/vlmhyperbenchteam/metric-evaluator:python3.10-slim_v0.1.0"
-    )
+    
+    # Получим список python-пакетов для каждого этапа работы
+    vlm_run_packages = config.load_packages("vlm_run")
+    eval_run_packages = config.load_packages("eval_run")
 
     environment = load_env_vars()
 
     # 2. Этап "Запуск VLM" на Docker-контейнере
+    config.vlm_run_packages.append()
     run_container(
         vlm_docker_img,
         volumes,
         script_path="/workspace/bench_stages/run_vlm.py",
-        packages_to_install=[
-            "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.3",
-            # "/workspace/wheels/benchmark_run_config-0.1.0-py3-none-any.whl",
-            "git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0",
-            "git+https://github.com/VLMHyperBenchTeam/model_qwen2.5-vl.git@0.1.0",
-            "git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.1",
-            # "git+https://github.com/VLMHyperBenchTeam/system_prompt_adapter.git@0.1.0",
-            "git+https://github.com/VLMHyperBenchTeam/config_manager.git@0.1.0",
-        ],
+        packages_to_install=config.vlm_run_packages,
         use_gpu=True,
     )
 
     # 3. Этап "Оценка метрик" на Docker-контейнере
     run_container(
-        eval_docker_img,
+        config.cfg["eval_docker_img"],
         volumes,
         script_path="bench_stages/run_eval.py",
-        packages_to_install=[
-            "git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.3",
-            "git+https://github.com/VLMHyperBenchTeam/metric_evaluator.git@0.1.1",
-            "git+https://github.com/VLMHyperBenchTeam/config_manager.git@0.1.0"
-        ],
+        packages_to_install=eval_run_packages,
     )
