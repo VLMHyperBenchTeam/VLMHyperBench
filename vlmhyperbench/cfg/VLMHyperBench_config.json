@@ -1,0 +1,17 @@
+{
+    "data_dirs": {
+        "vlm_base": "vlmhyperbench/vlm_base.csv",
+        "datasets": "vlmhyperbench/Datasets",
+        "model_answers": "vlmhyperbench/ModelsAnswers",
+        "model_metrics": "vlmhyperbench/ModelsMetrics",
+        "prompt_collections": "vlmhyperbench/PromptCollections",
+        "system_prompts": "vlmhyperbench/SystemPrompts",
+        "reports": "vlmhyperbench/Reports"
+    },
+    "system_dirs": {
+        "cfg": "vlmhyperbench/cfg",
+        "bench_stages": "vlmhyperbench/bench_stages",
+        "model_cache": "vlmhyperbench/model_cache",
+        "wheels": "vlmhyperbench/wheels"
+    }
+}
