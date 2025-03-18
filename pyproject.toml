@@ -14,3 +14,6 @@ benchmark-scheduler = {git = "https://github.com/VLMHyperBenchTeam/benchmark_sch
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
