@@ -1,0 +1,19 @@
+{
+    "data_dirs": {
+        "datasets": "vlmhyperbench/Datasets",
+        "model_answers": "vlmhyperbench/ModelsAnswers",
+        "model_metrics": "vlmhyperbench/ModelsMetrics",
+        "prompt_collections": "vlmhyperbench/PromptCollections",
+        "system_prompts": "vlmhyperbench/SystemPrompts",
+        "reports": "vlmhyperbench/Reports"
+    },
+    "system_dirs": {
+        "cfg": "vlmhyperbench/cfg",
+        "bench_stages": "vlmhyperbench/bench_stages",
+        "model_cache": "vlmhyperbench/model_cache",
+        "wheels": "vlmhyperbench/wheels"
+    },
+    "eval_docker_img": "ghcr.io/vlmhyperbenchteam/metric-evaluator:python3.10-slim_v0.1.0",
+    "vlm_run_packages": "vlmhyperbench/cfg/vlm_run_requirements.txt",
+    "eval_run_packages": "vlmhyperbench/cfg/eval_run_requirements.txt"
+}
