@@ -1,3 +1,3 @@
-﻿dataset;framework;model_name;docker_image;system_prompt;prompt_collection;metrics;only_evaluate_metrics;metrics_aggregators;filter_doc_class;filter_question_type
-Passport_MINI;Hugging Face;Qwen2-VL-2B;ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0;1.txt;AntonShiryaev.csv;['WER', 'CER', 'BLEU'];False;['by_id', 'by_doc_type', 'overall'];;
-Passport_MINI;Hugging Face;Qwen2-VL-7B;ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.1;;AntonShiryaev.csv;['WER', 'CER', 'BLEU'];False;['by_id', 'by_doc_type', 'overall'];;
+﻿dataset;task;framework;model_name;system_prompt;prompt_collection;metrics;only_evaluate_metrics;metrics_aggregators;filter_doc_class;filter_question_type
+snils;VQA;Hugging Face;Qwen2.5-VL-3B;;AntonShiryaev.csv;['WER', 'CER', 'BLEU'];False;"[""by_id"", ""by_doc_question"", ""by_doc_type"", ""general""]";snils;Номер снилса
+idt_pdf_full_mini;VQA;Hugging Face;Qwen2-VL-2B;;AntonShiryaev.csv;['WER', 'CER', 'BLEU'];False;"[""by_id"", ""by_doc_question"", ""by_doc_type"", ""general""]";doc;Номер страницы
