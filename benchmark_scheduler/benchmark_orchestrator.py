@@ -10,7 +10,24 @@ from .user_config_reader import UserConfigReader
 
 
 class BenchmarkOrchestrator:
+    """Оркестратор для выполнения `Evaluation run` для VLM-моделей.
+
+    Attributes:
+        evalkit_config (ConfigManager): Менеджер конфигурации VLMHyperBench
+        volumes (Dict[str, str]): Словарь с маппингом директорий для монтирования в Docker-контейнеры
+        vlm_run_packages (List[str]): Список Python-пакетов, которые будут установлены для этапа запуска VLM
+        eval_run_packages (List[str]): Список Python-пакетов, которые будут установлены для этапа оценки метрик
+        environment (Dict[str, str]): Переменные окружения для контейнеров
+        bench_run_cfgs (List[BenchmarkRunConfig]): Список конфигураций запусков бенчмарка
+
+    """
     def __init__(self, config_path: str) -> None:
+        """Инициализирует оркестратор.
+
+        Args:
+            config_path (str): Путь к конфигурационному файлу VLMHyperBench
+
+        """
         # Считываем конфиг для VLMHyperBench
         self.evalkit_config = ConfigManager(config_path)
 
@@ -35,10 +52,27 @@ class BenchmarkOrchestrator:
         self.bench_run_cfgs = user_cfg_reader.read_user_config()
 
     def run_scheduler(self):
+        """Запускает цикл выполнения всех конфигураций `Evaluation run`.
+
+        Последовательно выполняет benchmark_run() для каждой конфигурации
+        из self.bench_run_cfgs.
+
+        """
         for bench_run_cfg in self.bench_run_cfgs:
             self.benchmark_run(bench_run_cfg)
 
     def benchmark_run(self, bench_run_cfg):
+        """Выполняет полный цикл одного `Evaluation run`.
+
+        Args:
+            bench_run_cfg (BenchmarkRunConfig): Конфигурация текущего запуска
+
+        Осуществляет:
+            1. Сохранение конфигурации в JSON
+            2. Запуск VLM-модели в Docker-контейнере
+            3. Оценку метрик в отдельном Docker-контейнере
+
+        """
         bench_run_cfg.to_json(self.evalkit_config.cfg["benchmark_run_cfg"])
 
         # 2. Этап "Запуск VLM" на Docker-контейнере
