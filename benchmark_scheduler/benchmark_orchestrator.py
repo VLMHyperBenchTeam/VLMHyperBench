@@ -1,21 +1,76 @@
+import copy
 import os
 from typing import Any, Dict, List, Optional
 
 import docker
+from config_manager.config_manager import ConfigManager
 from dotenv import load_dotenv
 
-from benchmark_run_config.benchmark_run_config import BenchmarkRunConfig
 from .user_config_reader import UserConfigReader
 
 
 class BenchmarkOrchestrator:
-    def __init__(
-        self, config_path: str, vlm_base_path: str = "vlmhyperbench/vlm_base.csv"
-    ) -> None:
-        user_config_reader = UserConfigReader(config_path, vlm_base_path)
-        bench_run_cfgs = user_config_reader.read_user_config()
+    def __init__(self, config_path: str) -> None:
+        # Считываем конфиг для VLMHyperBench
+        self.evalkit_config = ConfigManager(config_path)
 
-        self.bench_run_cfgs = bench_run_cfgs
+        # Получим маппинг директорий для Docker-контейнера
+        self.volumes = self.evalkit_config.get_volumes()
+        self.volumes = host_paths_to_abs(self.volumes)
+
+        # Получим список python-пакетов для каждого этапа работы
+        self.vlm_run_packages = self.evalkit_config.load_packages("vlm_run")
+        self.eval_run_packages = self.evalkit_config.load_packages("eval_run")
+
+        # загружаем переменные окружения
+        self.environment = load_env_vars()
+        self.environment["VLMHYPERBENCH_CONFIG_PATH"] = (
+            self.evalkit_config.cfg_container["vlmhyperbench_cfg"]
+        )
+
+        # Получим список Evaluation Run'ов из `user_config.csv`
+        user_cfg_reader = UserConfigReader(
+            self.evalkit_config.cfg["user_config"], self.evalkit_config.cfg["vlm_base"]
+        )
+        self.bench_run_cfgs = user_cfg_reader.read_user_config()
+
+    def run_scheduler(self):
+        for bench_run_cfg in self.bench_run_cfgs:
+            self.benchmark_run(bench_run_cfg)
+
+    def benchmark_run(self, bench_run_cfg):
+        bench_run_cfg.to_json(self.evalkit_config.cfg["benchmark_run_cfg"])
+
+        # 2. Этап "Запуск VLM" на Docker-контейнере
+        vlm_run_packages = copy.deepcopy(self.vlm_run_packages)
+        vlm_run_packages.append(bench_run_cfg.git_python_package)
+        print(vlm_run_packages)
+        run_vlm_path = os.path.join(
+            self.evalkit_config.cfg_container["system_dirs"]["bench_stages"],
+            "run_vlm.py",
+        )
+        run_container(
+            bench_run_cfg.docker_image,
+            self.volumes,
+            script_path=run_vlm_path,
+            packages_to_install=vlm_run_packages,
+            use_gpu=True,
+            environment=self.environment,
+        )
+
+        # 3. Этап "Оценка метрик" на Docker-контейнере
+        print(self.evalkit_config.cfg["eval_docker_img"])
+        run_eval_path = os.path.join(
+            self.evalkit_config.cfg_container["system_dirs"]["bench_stages"],
+            "run_eval.py",
+        )
+        run_container(
+            self.evalkit_config.cfg["eval_docker_img"],
+            self.volumes,
+            script_path=run_eval_path,
+            packages_to_install=self.eval_run_packages,
+            environment=self.environment,
+        )
 
 
 def host_paths_to_abs(

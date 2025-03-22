@@ -25,5 +25,5 @@
     ],
     "filter_doc_class": "doc",
     "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b",
-    "metric_file": "/workspace/data_dirs/model_answers/idt_pdf_full_mini_MODELFRAMEWORK_Qwen2.5-VL-7B-Instruct_VQA_answers_20250322_193012.csv"
+    "metric_file": "/workspace/data_dirs/model_answers/idt_pdf_full_mini_MODELFRAMEWORK_Qwen2.5-VL-7B-Instruct_VQA_answers_20250322_200233.csv"
 }
