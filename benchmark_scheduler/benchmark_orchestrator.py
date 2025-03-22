@@ -4,6 +4,8 @@ from typing import Any, Dict, List, Optional
 
 import docker
 from config_manager.config_manager import ConfigManager
+from docker import DockerClient
+from docker.errors import APIError, ImageNotFound
 from dotenv import load_dotenv
 
 from .user_config_reader import UserConfigReader
@@ -21,6 +23,7 @@ class BenchmarkOrchestrator:
         bench_run_cfgs (List[BenchmarkRunConfig]): Список конфигураций запусков бенчмарка
 
     """
+
     def __init__(self, config_path: str) -> None:
         """Инициализирует оркестратор.
 
@@ -57,7 +60,11 @@ class BenchmarkOrchestrator:
         Последовательно выполняет benchmark_run() для каждой конфигурации
         из self.bench_run_cfgs.
 
+        Перед запуском `Evaluation run` проверяет наличие Docker-образов.
         """
+        if not self.pull_required_images():
+            print("Ошибка: Не все необходимые Docker-образы были загружены.")
+            return
         for bench_run_cfg in self.bench_run_cfgs:
             self.benchmark_run(bench_run_cfg)
 
@@ -106,6 +113,32 @@ class BenchmarkOrchestrator:
             environment=self.environment,
         )
 
+    def pull_required_images(self) -> bool:
+        """Скачивает все необходимые Docker-образы для выполнения `Evaluation run`.
+
+        Returns:
+            bool: True, если все образы успешно загружены, иначе False.
+        """
+        required_images = set()
+        # Собираем образы из конфигураций Evaluation run
+        for bench_run_cfg in self.bench_run_cfgs:
+            required_images.add(bench_run_cfg.docker_image)
+
+        # Добавляем образ для оценки метрик
+        required_images.add(self.evalkit_config.cfg["eval_docker_img"])
+
+        success = True
+        for image in required_images:
+            # Разделяем имя образа и тег
+            parts = image.split(":", 1)
+            image_name = parts[0]
+            tag = parts[1] if len(parts) > 1 else "latest"
+
+            print(f"Проверка образа: {image_name}:{tag}")
+            if not check_and_pull_image(image_name, tag):
+                success = False
+        return success
+
 
 def host_paths_to_abs(
     volumes: Dict[str, str], current_dir: str | None = None
@@ -147,6 +180,61 @@ def host_paths_to_abs(
         os.path.join(current_dir, host_path): container_path
         for host_path, container_path in volumes.items()
     }
+
+
+def check_and_pull_image(image_name: str, tag: str = "latest") -> bool:
+    """Проверяет наличие Docker-образа и скачивает его при необходимости.
+
+    Args:
+        image_name (str): Название Docker-образа (например, "python")
+        tag (str): Тег образа. По умолчанию "latest"
+
+    Returns:
+        bool: True если образ успешно найден/скачан, False в случае ошибки
+
+    Raises:
+        docker.errors.APIError: При ошибках API Docker [[1]]
+        ValueError: Если название образа пустое
+
+    Example:
+        >>> check_and_pull_image("nvidia/cuda", "12.4.0-base")
+        Pulling nvidia/cuda:12.4.0-base...
+        [======>                             ] 25% Downloading...
+        ...
+        True
+    """
+    if not image_name:
+        raise ValueError("image_name не может быть пустым!")
+
+    client: DockerClient = docker.from_env()
+    full_image_name = f"{image_name}:{tag}"
+
+    try:
+        # Проверяем наличие локального образа
+        client.images.get(full_image_name)
+        print(f"Docker-образ {full_image_name} уже существует локально")
+        return True
+
+    except ImageNotFound:
+        print(f"Docker-образ {full_image_name} не найден локально. Pulling...")
+
+        try:
+            # Скачиваем образ с выводом прогресса
+            pull_log = client.api.pull(image_name, tag=tag, stream=True, decode=True)
+
+            # Обработка вывода прогресса
+            for line in pull_log:
+                if "status" in line:
+                    status = line["status"]
+                    progress = line.get("progress", "")
+                    print(f"{status} {progress}".strip())
+
+            print(f"Docker-образ успешно pulled {full_image_name}")
+            return True
+
+        except APIError as e:
+            print(f"Не удалось выполнить pull Docker-образа: {e}")
+            return False
 
 
 def run_container(
