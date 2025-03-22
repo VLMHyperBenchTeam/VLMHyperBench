@@ -4,6 +4,7 @@ from benchmark_scheduler.benchmark_orchestrator import (
     load_env_vars,
     run_container,
 )
+from benchmark_scheduler.user_config_reader import UserConfigReader
 from config_manager.config_manager import ConfigManager
 
 if __name__ == "__main__":
@@ -22,7 +23,16 @@ if __name__ == "__main__":
     eval_run_packages = evalkit_config.load_packages("eval_run")
 
     environment = load_env_vars()
-    
+
+    # Получим список Evaluation Run'ов из `user_config.csv`
+    user_cfg_reader = UserConfigReader(
+        evalkit_config.cfg["user_config"], evalkit_config.cfg["vlm_base"]
+    )
+    bench_run_cfgs = user_cfg_reader.read_user_config()
+
+    for bench_run_cfg in bench_run_cfgs:
+        print(bench_run_cfg)
+
     eval_run_cfg = BenchmarkRunConfig.from_json(evalkit_config.cfg["benchmark_run_cfg"])
 
     # 2. Этап "Запуск VLM" на Docker-контейнере
