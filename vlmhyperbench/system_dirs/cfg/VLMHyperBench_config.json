@@ -1,0 +1,23 @@
+{
+    "user_config": "user_config_prompt_eval.csv",
+    "vlm_base": "vlmhyperbench/vlm_base.csv",
+    "data_dirs": {
+        "datasets": "vlmhyperbench/data_dirs/Datasets",
+        "model_answers": "vlmhyperbench/data_dirs/ModelsAnswers",
+        "model_metrics": "vlmhyperbench/data_dirs/ModelsMetrics",
+        "prompt_collections": "vlmhyperbench/data_dirs/PromptCollections",
+        "system_prompts": "vlmhyperbench/data_dirs/SystemPrompts",
+        "reports": "vlmhyperbench/data_dirs/Reports"
+    },
+    "system_dirs": {
+        "cfg": "vlmhyperbench/system_dirs/cfg",
+        "bench_stages": "vlmhyperbench/system_dirs/bench_stages",
+        "model_cache": "vlmhyperbench/system_dirs/model_cache",
+        "wheels": "vlmhyperbench/system_dirs/wheels"
+    },
+    "eval_docker_img": "ghcr.io/vlmhyperbenchteam/metric-evaluator:python3.10-slim_v0.1.0",
+    "vlm_run_packages": "vlmhyperbench/system_dirs/cfg/vlm_run_requirements.txt",
+    "eval_run_packages": "vlmhyperbench/system_dirs/cfg/eval_run_requirements.txt",
+    "benchmark_run_cfg": "vlmhyperbench/system_dirs/cfg/BenchmarkRunConfig.json",
+    "vlmhyperbench_cfg": "vlmhyperbench/system_dirs/cfg/VLMHyperBench_config.json"
+}

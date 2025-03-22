@@ -24,60 +24,63 @@ def run_vlm_stage_greet(config, model_class_path):
 
 
 if __name__ == "__main__":
-    # TODO: получился жестко захардкоженный параметр!
-    cfg_path = "/workspace/cfg/VLMHyperBench_config.json"
-    run_cfg_filename = "BenchmarkRunConfig.json"
-
     # Получаем конфиг с всеми путями в Docker-контейнере
-    software_cfg = ConfigManager(cfg_path)
-    container_cfg = software_cfg.cfg_container
+    cfg_path = os.getenv("VLMHYPERBENCH_CONFIG_PATH")
+    cfg_container = ConfigManager(cfg_path).cfg_container
 
     # Получаем конфиг со всеми параметрами прогона
-    config_dir = os.path.join(container_cfg["system_dirs"]["cfg"], run_cfg_filename)
-    config = BenchmarkRunConfig.from_json(config_dir)
+    run_config = BenchmarkRunConfig.from_json(cfg_container["benchmark_run_cfg"])
 
     # Инфо о том где взять класс для семейства моделей
-    model_class_path = f"{config.python_package}.{config.module}:{config.class_name}"
+    model_class_path = (
+        f"{run_config.python_package}.{run_config.module}:{run_config.class_name}"
+    )
 
     # Регистрация модели в фабрике
-    ModelFactory.register_model(config.model_family, model_class_path)
+    ModelFactory.register_model(run_config.model_family, model_class_path)
 
     # TODO: Получаем системный промпт
     # system_prompt_adapter = ...
 
     # параметры модели - передаем системный промпт, если доступен
     model_init_params = {
-        "model_name": config.model_name,
+        "model_name": run_config.model_name,
         "system_prompt": "",
-        "cache_dir": container_cfg["system_dirs"]["model_cache"],
+        "cache_dir": cfg_container["system_dirs"]["model_cache"],
     }
 
-    run_vlm_stage_greet(config, model_class_path)
+    run_vlm_stage_greet(run_config, model_class_path)
 
-    model = ModelFactory.get_model(config.model_family, model_init_params)
+    model = ModelFactory.get_model(run_config.model_family, model_init_params)
 
     # Совершаем прогон модели по датасету
     dataset_dir_path = os.path.join(
-        container_cfg["data_dirs"]["datasets"], config.task_name, config.dataset
+        cfg_container["data_dirs"]["datasets"], run_config.task_name, run_config.dataset
     )
 
+    prompt_collection_dir_path = os.path.join(
+        cfg_container["data_dirs"]["prompt_collections"], run_config.task_name
+    )
+    print(dataset_dir_path)
+    print(prompt_collection_dir_path)
+
     iterator = IteratorFabric.get_dataset_iterator(
-        task_name=config.task_name,
-        dataset_name=config.dataset,
-        filter_doc_class=config.filter_doc_class,
-        filter_question_type=config.filter_question_type,
+        task_name=run_config.task_name,
+        dataset_name=run_config.dataset,
+        filter_doc_class=run_config.filter_doc_class,
+        filter_question_type=run_config.filter_question_type,
         dataset_dir_path=dataset_dir_path,
-        prompt_collection_filename=config.prompt_collection,
-        prompt_dir=container_cfg["data_dirs"]["prompt_collections"],
+        prompt_collection_filename=run_config.prompt_collection,
+        prompt_dir=prompt_collection_dir_path,
     )
 
     runner = IteratorFabric.get_runner(
-        iterator, model, answers_dir_path=container_cfg["data_dirs"]["model_answers"]
+        iterator, model, answers_dir_path=cfg_container["data_dirs"]["model_answers"]
     )
     runner.run()
 
     metric_file_path = runner.save_answers()
 
-    config.metric_file = metric_file_path
-
-    config.to_json(config_dir)
+    # Сохраняем результаты в BenchmarkRunConfig.json
+    run_config.metric_file = metric_file_path
+    run_config.to_json(cfg_container["benchmark_run_cfg"])

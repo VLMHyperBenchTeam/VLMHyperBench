@@ -26,43 +26,37 @@ def run_vlm_eval_greet(config, model_class_path):
     print("\n" * 2)
 
 
-if __name__ == "__main__":
-    # TODO: получился жестко захардкоженный параметр!
-    cfg_path = "/workspace/cfg/VLMHyperBench_config.json"
-    run_cfg_filename = "BenchmarkRunConfig.json"
-    
+if __name__ == "__main__":    
     # Получаем конфиг с всеми путями в Docker-контейнере
-    software_cfg = ConfigManager(cfg_path)
-    container_cfg = software_cfg.cfg_container
+    cfg_path = os.getenv("VLMHYPERBENCH_CONFIG_PATH")
+    cfg_container = ConfigManager(cfg_path).cfg_container
     
     # Получаем конфиг со всеми параметрами прогона
-    config_dir = os.path.join(container_cfg["system_dirs"]["cfg"], run_cfg_filename)
-    print(config_dir)
-    config = BenchmarkRunConfig.from_json(config_dir)
+    run_config = BenchmarkRunConfig.from_json(cfg_container["benchmark_run_cfg"])
 
     # Инфо о том где взять класс для семейства моделей
-    model_class_path = f"{config.python_package}.{config.module}:{config.class_name}"
+    model_class_path = f"{run_config.python_package}.{run_config.module}:{run_config.class_name}"
 
-    run_vlm_eval_greet(config, model_class_path)
+    run_vlm_eval_greet(run_config, model_class_path)
 
     dataset_annot = os.path.join(
-        container_cfg["data_dirs"]["datasets"], config.task_name, config.dataset, "annotation.csv"
+        cfg_container["data_dirs"]["datasets"], run_config.task_name, run_config.dataset, "annotation.csv"
     )
 
     # Получаем название файла метрик
-    model_answers = config.metric_file
+    model_answers = run_config.metric_file
     filename_from_metric = os.path.split(model_answers)[-1]
     filename_from_metric = os.path.splitext(filename_from_metric)[0]
 
     metric_eval = MetricEvaluator(dataset_annot, model_answers)
 
     # Производим расчет метрик по всем агрегаторам
-    for metrics_aggregator in config.metrics_aggregators:
+    for metrics_aggregator in run_config.metrics_aggregators:
         metric_csv_path = os.path.join(
-            container_cfg["data_dirs"]["model_metrics"], f"{filename_from_metric}_{metrics_aggregator}.csv"
+            cfg_container["data_dirs"]["model_metrics"], f"{filename_from_metric}_{metrics_aggregator}.csv"
         )
         metric_eval.save_function_results(
             csv_path=metric_csv_path,
             func_name=metrics_aggregator,
-            metrics=config.metrics,
+            metrics=run_config.metrics,
         )

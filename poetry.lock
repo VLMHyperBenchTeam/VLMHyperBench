@@ -272,8 +272,8 @@ develop = false
 [package.source]
 type = "git"
 url = "https://github.com/VLMHyperBenchTeam/config_manager.git"
-reference = "0.1.1"
-resolved_reference = "722b5a42304a4519aeb7cc06908b5b202189574b"
+reference = "0.1.2"
+resolved_reference = "10584a5debd61daec212ab7c09af3a44d04e84bb"
 
 [[package]]
 name = "debugpy"
@@ -1143,4 +1143,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "7c00863b626f73b25ca40a981199473189400773436a5da92783c2c58e5241fb"
+content-hash = "2f7c9b5bd3a068f137d2aa84666b23f1729c4293c432f9535e384b25e6a63ceb"
