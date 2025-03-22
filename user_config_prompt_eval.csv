@@ -1,0 +1,2 @@
+﻿dataset;task;framework;model_name;system_prompt;prompt_collection;metrics;only_evaluate_metrics;metrics_aggregators;filter_doc_class;filter_question_type
+idt_pdf_full_mini;VQA;Hugging Face;Qwen2.5-VL-7B-Instruct;;idt_pdf_full/Qwen2.5-VL-7B-Instruct/JuliaJu_en_Qwen2_5-VL-7B_page_number_full_ver0_cer_00.csv;['WER', 'CER', 'BLEU'];False;"[""by_id"", ""by_doc_question"", ""by_doc_type"", ""general""]";doc;Номер страницы

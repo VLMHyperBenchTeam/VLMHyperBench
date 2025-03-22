@@ -30,17 +30,11 @@ logs/
 # Игнорируем python wheels
 *.whl
 
-# ignore data Hugging Face model_cache
-vlmhyperbench/model_cache
+# ignore all VLMHyperBench data_dirs
+vlmhyperbench/data_dirs
 
-# Игнорируем все датасеты
-vlmhyperbench/Datasets/*
+# ignore all VLMHyperBench model_cache
+vlmhyperbench/system_dirs/model_cache
 
-# Игнорируем все коллекции промптов
-vlmhyperbench/PromptCollections/*
-
-# Игнорируем ответы моделей
-vlmhyperbench/ModelsAnswers/*
-
-# Игнорируем метрики моделей
-vlmhyperbench/ModelsMetrics/*
+# ignore all VLMHyperBench wheels
+vlmhyperbench/system_dirs/wheels
