@@ -4,9 +4,9 @@ from typing import Any, Dict, List, Optional
 
 import docker
 from config_manager.config_manager import ConfigManager
-from docker import DockerClient
 from docker.errors import APIError, ImageNotFound
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 from .user_config_reader import UserConfigReader
 
@@ -203,38 +203,68 @@ def check_and_pull_image(image_name: str, tag: str = "latest") -> bool:
         ...
         True
     """
-    if not image_name:
-        raise ValueError("image_name не может быть пустым!")
-
-    client: DockerClient = docker.from_env()
+    client = docker.from_env()
     full_image_name = f"{image_name}:{tag}"
+    BAR_WIDTH = 120
 
     try:
-        # Проверяем наличие локального образа
         client.images.get(full_image_name)
-        print(f"Docker-образ {full_image_name} уже существует локально")
+        print(f"Образ {full_image_name} уже существует")
+        return True
+    except ImageNotFound:
+        pass
+
+    try:
+        pull_log = client.api.pull(image_name, tag=tag, stream=True, decode=True)
+        layer_bars = {}
+        last_status = None
+
+        for line in pull_log:
+            if "id" not in line:
+                continue
+
+            layer_id = line["id"]
+            status = line.get("status", "N/A")
+
+            # Создаем/обновляем прогресс-бар
+            if layer_id not in layer_bars:
+                layer_bars[layer_id] = tqdm(
+                    desc=f"{layer_id[:12]:<12}",
+                    unit="B",
+                    unit_scale=True,
+                    leave=False,
+                    ncols=BAR_WIDTH,
+                    position=len(layer_bars),
+                    dynamic_ncols=False,
+                    bar_format="{l_bar}{bar}|{n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}{postfix}]",
+                )
+
+            bar = layer_bars[layer_id]
+            if "progressDetail" in line:
+                detail = line["progressDetail"]
+                if "current" in detail and "total" in detail:
+                    bar.total = detail["total"]
+                    bar.update(detail["current"] - bar.n)
+
+            # Обновляем статус
+            if status != last_status:
+                last_status = status
+                postfix = f" {status}"[: BAR_WIDTH // 3]
+                bar.set_postfix_str(postfix, refresh=False)
+
+        # Завершаем все бары
+        for bar in layer_bars.values():
+            bar.close()
+
+        print(f"\nDocker-образ {full_image_name} успешно загружен")
         return True
 
-    except ImageNotFound:
-        print(f"Docker-образ {full_image_name} не найден локально. Pulling...")
-
-        try:
-            # Скачиваем образ с выводом прогресса
-            pull_log = client.api.pull(image_name, tag=tag, stream=True, decode=True)
-
-            # Обработка вывода прогресса
-            for line in pull_log:
-                if "status" in line:
-                    status = line["status"]
-                    progress = line.get("progress", "")
-                    print(f"{status} {progress}".strip())
-
-            print(f"Docker-образ успешно pulled {full_image_name}")
-            return True
-
-        except APIError as e:
-            print(f"Не удалось выполнить pull Docker-образа: {e}")
-            return False
+    except APIError as e:
+        print(f"Ошибка при загрузке образа: {e}")
+        return False
+    finally:
+        for bar in getattr(layer_bars, "values", []):
+            bar.close()
 
 
 def run_container(

@@ -13,6 +13,7 @@ config-manager = {git = "https://github.com/VLMHyperBenchTeam/config_manager.git
 docker = "^7.1.0"
 python-dotenv = "^1.0.1"
 benchmark-run-config = {git = "https://github.com/VLMHyperBenchTeam/benchmark_run_config.git", rev = "0.1.4"}
+tqdm = "^4.67.1"
 
 [build-system]
 requires = ["poetry-core"]
