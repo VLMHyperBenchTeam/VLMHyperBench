@@ -263,7 +263,7 @@ def check_and_pull_image(image_name: str, tag: str = "latest") -> bool:
         print(f"Ошибка при загрузке образа: {e}")
         return False
     finally:
-        for bar in getattr(layer_bars, "values", []):
+        for bar in layer_bars.values():
             bar.close()
 
 
