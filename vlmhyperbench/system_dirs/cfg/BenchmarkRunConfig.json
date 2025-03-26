@@ -1,20 +1,18 @@
 {
-    "dataset": "idt_pdf_full_mini",
+    "dataset": "midv-2020-rus-mini",
     "framework": "Hugging Face",
-    "model_name": "Qwen2.5-VL-7B-Instruct",
-    "model_family": "Qwen2.5-VL",
+    "model_name": "Qwen2-VL-2B-Instruct",
+    "model_family": "Qwen2-VL",
     "task_name": "VQA",
-    "prompt_collection": "idt_pdf_full/Qwen2.5-VL-7B-Instruct/JuliaJu_en_Qwen2_5-VL-7B_page_number_full_ver0_cer_00.csv",
-    "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2.5-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
-    "git_python_package": "git+https://github.com/VLMHyperBenchTeam/model_qwen2.5-vl.git@0.1.0",
-    "python_package": "model_qwen2_5_vl",
+    "prompt_collection": "midv-2020-rus-min/Qwen2-VL-2B_midv-2020-rus-mini.csv",
+    "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
+    "git_python_package": "git+https://github.com/VLMHyperBenchTeam/model_qwen2-vl.git@0.1.0",
+    "python_package": "model_qwen2_vl",
     "module": "models",
-    "class_name": "Qwen2_5_VLModel",
+    "class_name": "Qwen2VLModel",
     "system_prompt": null,
     "metrics": [
-        "WER",
-        "CER",
-        "BLEU"
+        "CER"
     ],
     "only_evaluate_metrics": false,
     "metrics_aggregators": [
@@ -23,7 +21,7 @@
         "by_doc_type",
         "general"
     ],
-    "filter_doc_class": "doc",
-    "filter_question_type": "\u041d\u043e\u043c\u0435\u0440 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b",
-    "metric_file": "/workspace/data_dirs/model_answers/idt_pdf_full_mini_MODELFRAMEWORK_Qwen2.5-VL-7B-Instruct_VQA_answers_20250322_200233.csv"
+    "filter_doc_class": "passport",
+    "filter_question_type": "\u0421\u0435\u0440\u0438\u044f \u0438 \u043d\u043e\u043c\u0435\u0440 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430",
+    "metric_file": "/workspace/data_dirs/model_answers/midv-2020-rus-mini_MODELFRAMEWORK_Qwen2-VL-2B-Instruct_VQA_answers_20250326_133109.csv"
 }
