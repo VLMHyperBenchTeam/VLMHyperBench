@@ -1,2 +1,2 @@
 ﻿dataset;task;framework;model_name;system_prompt;prompt_collection;metrics;only_evaluate_metrics;metrics_aggregators;filter_doc_class;filter_question_type
-midv-2020-rus-mini;VQA;Hugging Face;Qwen2-VL-2B-Instruct;;midv-2020-rus-min/Qwen2-VL-2B_midv-2020-rus-mini.csv;['CER'];False;"[""by_id"", ""by_doc_question"", ""by_doc_type"", ""general""]";passport;Серия и номер паспорта
+midv-2020-rus-mini;VQA;Hugging Face;Qwen2-VL-2B-Instruct;;midv-2020-rus-min/Qwen2-VL-2B_midv-2020-rus-mini.csv;['CER'];False;['by_id', 'by_doc_question', 'by_doc_type', 'general'];passport;Серия и номер паспорта
