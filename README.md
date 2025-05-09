@@ -135,3 +135,11 @@
 Данный облачный провайдер предлагает недорогую аренду облачных GPU. 
 Мы надеемся, что данный кейс будет полезен небольшим исследовательским группам или инженерам небольших компаний и стартапов.
 
+# Разработчики
+
+* Ширяев Антон [GitHub account](https://github.com/medphisiker)
+* Изюмова Анастасия [GitHub account](https://github.com/starminalush)
+* Овчинникова Юлия [GitHub account](https://github.com/YuliaOv22)
+* Лукин Семен [GitHub account](https://github.com/ctpemho7)
+* Капустин Евгений [GitHub account](https://github.com/EugenePWN)
+
