@@ -1,15 +1,15 @@
 {
     "dataset": "midv-2020-rus-mini",
     "framework": "Hugging Face",
-    "model_name": "Qwen2-VL-2B-Instruct",
-    "model_family": "Qwen2-VL",
+    "model_name": "Qwen2.5-VL-3B-Instruct",
+    "model_family": "Qwen2.5-VL",
     "task_name": "VQA",
-    "prompt_collection": "midv-2020-rus-min/Qwen2-VL-2B_midv-2020-rus-mini.csv",
-    "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
-    "git_python_package": "git+https://github.com/VLMHyperBenchTeam/model_qwen2-vl.git@0.1.0",
-    "python_package": "model_qwen2_vl",
+    "prompt_collection": "midv-2020-rus-min/Qwen2_5-VL-3B_midv-2020-rus-mini.csv",
+    "docker_image": "ghcr.io/vlmhyperbenchteam/qwen2.5-vl:ubuntu22.04-cu124-torch2.4.0_v0.1.0",
+    "git_python_package": "git+https://github.com/VLMHyperBenchTeam/model_qwen2.5-vl.git@0.1.0",
+    "python_package": "model_qwen2_5_vl",
     "module": "models",
-    "class_name": "Qwen2VLModel",
+    "class_name": "Qwen2_5_VLModel",
     "system_prompt": null,
     "metrics": [
         "CER"
@@ -21,7 +21,7 @@
         "by_doc_type",
         "general"
     ],
-    "filter_doc_class": "passport",
-    "filter_question_type": "\u0421\u0435\u0440\u0438\u044f \u0438 \u043d\u043e\u043c\u0435\u0440 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430",
-    "metric_file": "/workspace/data_dirs/model_answers/midv-2020-rus-mini_MODELFRAMEWORK_Qwen2-VL-2B-Instruct_VQA_answers_20250326_133109.csv"
+    "filter_doc_class": null,
+    "filter_question_type": null,
+    "metric_file": "/workspace/data_dirs/model_answers/midv-2020-rus-mini_MODELFRAMEWORK_Qwen2.5-VL-3B-Instruct_VQA_answers_20250326_153148.csv"
 }
