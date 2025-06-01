@@ -1,4 +1,3 @@
 git+https://github.com/VLMHyperBenchTeam/benchmark_run_config.git@0.1.4
-git+https://github.com/VLMHyperBenchTeam/model_interface.git@0.1.0
-git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.2
+git+https://github.com/VLMHyperBenchTeam/dataset_iterator.git@0.2.3
 git+https://github.com/VLMHyperBenchTeam/config_manager.git@0.1.2
