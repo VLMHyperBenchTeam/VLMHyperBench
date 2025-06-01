@@ -1,3 +1,3 @@
 ﻿dataset;task;framework;model_name;system_prompt;prompt_collection;metrics;only_evaluate_metrics;metrics_aggregators;filter_doc_class;filter_question_type
-midv-2020-rus-mini;VQA;Hugging Face;Qwen2-VL-2B-Instruct;;midv-2020-rus-min/Qwen2-VL-2B_midv-2020-rus-mini.csv;['CER'];False;['by_id', 'by_doc_question', 'by_doc_type', 'general'];;
-midv-2020-rus-mini;VQA;Hugging Face;Qwen2.5-VL-3B-Instruct;;midv-2020-rus-min/Qwen2_5-VL-3B_midv-2020-rus-mini.csv;['CER'];False;['by_id', 'by_doc_question', 'by_doc_type', 'general'];;
+demo_mini;VQA;Hugging Face;Qwen2-VL-2B-Instruct;;demo_mini/JuliaJu_Qwen2-VL-2B_demo_mini_cer0.csv;['CER'];False;['by_id', 'by_doc_question', 'by_doc_type', 'general'];;
+demo_mini;VQA;Hugging Face;Qwen2.5-VL-3B-Instruct;;demo_mini/JuliaJu_Qwen2_5-VL-3B_demo_mini_008.csv;['CER'];False;['by_id', 'by_doc_question', 'by_doc_type', 'general'];;
