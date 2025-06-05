@@ -137,9 +137,9 @@
 
 # Разработчики
 
-* Ширяев Антон [GitHub account](https://github.com/medphisiker)
-* Изюмова Анастасия [GitHub account](https://github.com/starminalush)
-* Овчинникова Юлия [GitHub account](https://github.com/YuliaOv22)
-* Лукин Семен [GitHub account](https://github.com/ctpemho7)
-* Капустин Евгений [GitHub account](https://github.com/EugenePWN)
+* Ширяев Антон, [GitHub account](https://github.com/medphisiker)
+* Овчинникова Юлия, [GitHub account](https://github.com/YuliaOv22)
+* Лукин Семен, [GitHub account](https://github.com/ctpemho7)
+* Капустин Евгений, [GitHub account](https://github.com/EugenePWN)
 
+![VLMHyperBench_development_team.png](repo_pics/VLMHyperBench_development_team.jpg)
