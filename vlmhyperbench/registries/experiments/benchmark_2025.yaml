@@ -1,0 +1,4 @@
+name: "Grand VLM Benchmark 2025"
+parallelism: 2
+tasks:
+  - "qwen_docvqa_ru"

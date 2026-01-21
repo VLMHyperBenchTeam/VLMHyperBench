@@ -1,0 +1,10 @@
+name: "qwen_docvqa_ru"
+ml_task: "vqa"
+model:
+  name: "Qwen2-VL"
+  framework: "vllm"
+dataset: "docvqa_ru"
+metrics:
+  - "anls"
+reports:
+  - "vqa_default_report"

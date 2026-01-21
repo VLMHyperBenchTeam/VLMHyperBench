@@ -1,0 +1,10 @@
+name: "Classification"
+entry_point: "vlmhyperbench.tasks.classification"
+required_packages: 
+  - "scikit-learn"
+  - "pandas"
+supported_metrics: 
+  - "accuracy"
+  - "f1_score"
+supported_reports:
+  - "classification_default_report"

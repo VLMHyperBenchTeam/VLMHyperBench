@@ -1,0 +1,10 @@
+name: "VQA"
+entry_point: "vlmhyperbench.tasks.vqa"
+required_packages: 
+  - "pillow"
+  - "torch"
+supported_metrics: 
+  - "anls"
+  - "cer"
+supported_reports:
+  - "vqa_default_report"

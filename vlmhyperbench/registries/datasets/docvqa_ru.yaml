@@ -1,0 +1,3 @@
+name: "docvqa_ru"
+description: "Russian Document VQA dataset."
+version: "1.0.0"

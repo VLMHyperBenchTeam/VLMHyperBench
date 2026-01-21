@@ -1,0 +1,10 @@
+name: "OCR"
+entry_point: "vlmhyperbench.tasks.ocr"
+required_packages: 
+  - "pillow"
+  - "pytesseract"
+supported_metrics: 
+  - "cer"
+  - "wer"
+supported_reports:
+  - "ocr_default_report"

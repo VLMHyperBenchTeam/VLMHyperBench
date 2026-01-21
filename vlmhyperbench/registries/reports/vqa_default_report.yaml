@@ -1,0 +1,3 @@
+name: "vqa_default_report"
+description: "Default VQA report with ANLS and CER metrics."
+version: "1.0.0"
