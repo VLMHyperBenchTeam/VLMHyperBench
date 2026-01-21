@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from tqdm import tqdm
 
 from .user_config_reader import UserConfigReader
+from dependency_injector.injector import DependencyInjector
 
 
 class BenchmarkOrchestrator:
@@ -332,15 +333,14 @@ def run_container(
     }
 
     # Формирование команды для установки пакетов и запуска скрипта
-    install_cmd = (
-        f"pip install {' '.join(packages_to_install)}" if packages_to_install else ""
-    )
+    # TODO: Получать package_manager из конфигурации модели
+    injector = DependencyInjector()
     scrypt_run_cmd = f"python -u {script_path}"
-    interactive_shell_cmd = "exec bash" if keep_container else ""
-
-    command = [install_cmd, scrypt_run_cmd, interactive_shell_cmd]
-    command = list(filter(lambda x: x != "", command))
-    command = " && ".join(command)
+    
+    command = injector.inject_into_command(scrypt_run_cmd, packages_to_install or [])
+    
+    if keep_container:
+        command = f"{command} && exec bash"
 
     # Объединение всех команд в одну
     command = f"sh -c '{command}'"
