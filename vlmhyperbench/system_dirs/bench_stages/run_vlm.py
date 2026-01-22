@@ -6,8 +6,7 @@ import time
 import pandas as pd
 from typing import List, Dict, Any
 
-from benchmark_run_config.benchmark_run_config import BenchmarkRunConfig
-from config_manager.config_manager import ConfigManager
+from task_registry.manager import RegistryManager
 from dataset_factory.factory import DatasetFactory
 from prompt_manager.manager import PromptManager
 from api_wrapper.client import AsyncModelClient
@@ -23,7 +22,7 @@ async def process_item(
     client: AsyncModelClient,
     item: Any,
     prompt_manager: PromptManager,
-    run_config: BenchmarkRunConfig,
+    run_config: Any,
 ) -> Dict[str, Any]:
     """
     Processes a single dataset item: resolves prompts, calls the model, and returns the result.
@@ -96,20 +95,24 @@ async def process_item(
             }
 
 async def run_async_vlm():
-    # 1. Setup configurations
-    cfg_path = os.getenv("VLMHYPERBENCH_CONFIG_PATH")
-    if not cfg_path:
-        logger.error("VLMHYPERBENCH_CONFIG_PATH not set")
+    # 1. Setup configurations using v0.2.0 Registry
+    registry_root = os.getenv("REGISTRY_ROOT", "/workspace/vlmhyperbench/registries")
+    run_name = os.getenv("RUN_NAME")
+    
+    if not run_name:
+        logger.error("RUN_NAME environment variable not set")
         return
 
-    cfg_container = ConfigManager(cfg_path).cfg_container
-    run_config = BenchmarkRunConfig.from_json(cfg_container["benchmark_run_cfg"])
+    registry = RegistryManager(root_dir=registry_root, run_mode=os.getenv("RUN_MODE", "dev"))
+    run_config = registry.get_run(run_name)
     
     # 2. Initialize PromptManager
+    # In v0.2.0, prompt collections are stored in data_dirs/PromptCollections/{task_name}/default.json
+    data_root = os.getenv("DATA_ROOT", "/workspace/data")
     prompt_config_path = os.path.join(
-        cfg_container["data_dirs"]["prompt_collections"], 
-        run_config.task_name, 
-        run_config.prompt_collection
+        data_root, "PromptCollections",
+        run_config.task,
+        "default.json"
     )
     prompt_manager = PromptManager.from_json(prompt_config_path)
     
@@ -122,9 +125,9 @@ async def run_async_vlm():
         # 4. Load model in API Wrapper
         load_request = ModelLoadRequest(
             model_name=run_config.model_name,
-            backend_class=f"{run_config.python_package}.{run_config.module}:{run_config.class_name}",
+            backend_class="vllm_adapter.adapter:vLLMAdapter", # Match the actual class name in adapter.py
             engine_params={
-                "cache_dir": cfg_container["system_dirs"]["model_cache"],
+                "cache_dir": "/workspace/model_cache",
                 # Add other params as needed
             }
         )
@@ -132,14 +135,12 @@ async def run_async_vlm():
         logger.info(f"Model {run_config.model_name} loaded successfully.")
 
         # 5. Initialize Dataset Iterator
-        dataset_dir_path = os.path.join(
-            cfg_container["data_dirs"]["datasets"], run_config.task_name, run_config.dataset
-        )
+        dataset_config = registry.get_dataset(run_config.dataset)
+        dataset_dir_path = os.path.join("/workspace", dataset_config.path)
         
         iterator = DatasetFactory.create(
-            type_name=run_config.dataset_type if hasattr(run_config, "dataset_type") else run_config.task_name,
+            type_name=dataset_config.iterator_class,
             dataset_dir_path=dataset_dir_path,
-            # Add other filters
         )
         
         # 6. Run Inference Loop with Semaphore
@@ -155,20 +156,18 @@ async def run_async_vlm():
         results = await asyncio.gather(*tasks)
         
         # 7. Save results
-        answers_dir = cfg_container["data_dirs"]["model_answers"]
+        answers_dir = "/workspace/data/ModelsAnswers"
         os.makedirs(answers_dir, exist_ok=True)
         
         timestamp = time.strftime("%Y%m%d_%H%M%S")
-        output_filename = f"answers_{run_config.model_name}_{timestamp}.csv"
+        # Clean model name for filename
+        safe_model_name = run_config.model_name.replace("/", "_")
+        output_filename = f"answers_{safe_model_name}_{timestamp}.csv"
         output_path = os.path.join(answers_dir, output_filename)
         
         df = pd.DataFrame(results)
         df.to_csv(output_path, index=False)
         logger.info(f"Results saved to {output_path}")
-        
-        # Update run_config
-        run_config.metric_file = output_path
-        run_config.to_json(cfg_container["benchmark_run_cfg"])
 
     finally:
         await client.unload_model()
